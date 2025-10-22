@@ -1,0 +1,32 @@
+<section class="api-demo">
+  <h1>What People Say</h1>
+
+  <input type="text" placeholder="Search by name..." (input)="onSearch($event.target.value)" />
+
+  <div *ngIf="users$ | async as users; else loading">
+    <ul #cardContainer>
+      <li *ngFor="let user of users">
+      <p class="comment">{{ user.comment }}</p>
+
+      <div class="user-info">
+        <strong>{{ user.name }}</strong> — {{ user.email }}
+      </div>
+      </li>
+    </ul>
+
+    <div class="arrows">
+      <button (click)="scrollLeft(cardContainer)">‹</button>
+      <button (click)="scrollRight(cardContainer)">›</button>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <p>Loading users...</p>
+  </ng-template>
+
+  <ng-template #noResults>
+    <p>No users found.</p>
+  </ng-template>
+
+  <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
+</section>

@@ -1,0 +1,36 @@
+<section class="faq">
+  <div class="faq-header">
+    <h1>FAQs</h1>
+  </div>
+
+  <div class="faq-columns">
+    <div class="faq-column">
+      <div *ngFor="let faq of faqs.slice(0, Math.ceil(faqs.length / 2))" class="faq-item">
+        <button class="faq-question" (click)="toggle(faq)">
+          <span class="text">{{ faq.question }}</span>
+          <span class="icon">{{ faq.open ? '×' : '+' }}</span>
+        </button>
+        <p *ngIf="faq.open" class="faq-answer">{{ faq.answer }}</p>
+      </div>
+    </div>
+
+    <div class="faq-column">
+      <div *ngFor="let faq of faqs.slice(Math.ceil(faqs.length / 2))" class="faq-item">
+        <button class="faq-question" (click)="toggle(faq)">
+          <span class="text">{{ faq.question }}</span>
+          <span class="icon">{{ faq.open ? '×' : '+' }}</span>
+        </button>
+        <p *ngIf="faq.open" class="faq-answer">{{ faq.answer }}</p>
+      </div>
+    </div>
+  </div>
+  <section class="faq-demo">
+    <h3>Ask your own question</h3>
+    <div class="faq-demo-row">
+      <input type="text" [(ngModel)]="userQuestion" placeholder="Type your question..." />
+      <button [disabled]="!userQuestion" (click)="ask()">Ask</button>
+    </div>
+
+    <p *ngIf="answer">{{ answer }}</p>
+  </section>
+</section>

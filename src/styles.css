@@ -1,1 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "myFont";
+  src: url("/assets/Belfast-Serial Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "myFont2";
+  src: url("/assets/frunchy-sage.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: radial-gradient(circle at 20% 30%, #e4d2f4 0%, transparent 40%),
+              radial-gradient(circle at 80% 20%, #f8d8d8 0%, transparent 50%),
+              radial-gradient(circle at 50% 80%, #eaedf8 0%, transparent 40%),
+              radial-gradient(circle at 80% 70%, #cee1e4 0%, transparent 40%),
+              #fdfbff;
+  background-attachment: scroll;      
+  background-size: 500% 500%;     
+  background-repeat: no-repeat;
+  animation: moveBgQuick 8s ease-in-out infinite alternate; 
+  will-change: background-position;
+  position: relative;
+}
+
+@keyframes moveBgQuick {
+  0% {
+    background-position: 0% 0%, 100% 0%, 50% 100%, 100% 100%, center;
+  }
+  33% {
+    background-position: 30% 10%, 80% 20%, 30% 90%, 80% 70%, center;
+  }
+  66% {
+    background-position: 60% 40%, 60% 40%, 70% 60%, 60% 40%, center;
+  }
+  100% {
+    background-position: 10% 80%, 20% 50%, 50% 20%, 20% 10%, center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none !important; }
+}
+main {
+  flex: 1;
+}
