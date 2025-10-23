@@ -2,6 +2,18 @@
   <h1>What People Say</h1>
 
   <input type="text" placeholder="Search by name..." (input)="onSearch($event.target.value)" />
+  
+  <div class="filter-buttons">
+    <button [class.active]="currentLimit === 3" (click)="changeLimit(3)">
+      3
+    </button>
+    <button [class.active]="currentLimit === 5" (click)="changeLimit(5)">
+      5
+    </button>
+    <button [class.active]="currentLimit === 10" (click)="changeLimit(10)">
+      10
+    </button>
+  </div>
 
   <div *ngIf="users$ | async as users; else loading">
     <ul #cardContainer>
@@ -14,7 +26,7 @@
       </li>
     </ul>
 
-    <div class="arrows">
+    <div class="arrows" *ngIf="usersCount > 3">
       <button (click)="scrollLeft(cardContainer)">‹</button>
       <button (click)="scrollRight(cardContainer)">›</button>
     </div>

@@ -8,6 +8,7 @@ import {
   map,
   catchError,
   startWith,
+  switchMap,
 } from 'rxjs/operators';
 import { Api } from '../services/api';
 
@@ -20,34 +21,46 @@ import { Api } from '../services/api';
 })
 export class ApiDemoComponent implements OnInit {
   users$ = of<any[]>([]);
+  usersCount = 0;
   errorMsg = '';
   searchSubject = new BehaviorSubject<string>('');
+  limitSubject = new BehaviorSubject<number>(5);
+  currentLimit = 5;
 
   constructor(private api: Api) { }
 
   ngOnInit() {
-    const users$ = this.api.getFeedback(5).pipe(
-      catchError((err) => {
-        this.errorMsg = err.message;
-        return of([]);
-      })
-    );
-
     this.users$ = combineLatest([
-      users$,
+      this.limitSubject.pipe(
+        switchMap((limit) =>
+          this.api.getFeedback(limit).pipe(
+            catchError((err) => {
+              this.errorMsg = err.message;
+              return of([]);
+            })
+          )
+        )
+      ),
       this.searchSubject.pipe(
         startWith(''),
         debounceTime(300),
         distinctUntilChanged()
       ),
     ]).pipe(
-      map(([users, term]) =>
-        users.filter((u: any) =>
-          u.name.toLowerCase().includes(term.toLowerCase()) ||
-          u.comment.toLowerCase().includes(term.toLowerCase())
-        )
-      )
+      map(([users, term]) => {
+        const filtered = users.filter(
+          (u: any) =>
+            u.name.toLowerCase().includes(term.toLowerCase()) ||
+            u.comment.toLowerCase().includes(term.toLowerCase())
+        );
+        this.usersCount = filtered.length;
+        return filtered;
+      })
     );
+  }
+  changeLimit(newLimit: number) {
+    this.currentLimit = newLimit;
+    this.limitSubject.next(newLimit); 
   }
 
   onSearch(term: string) {
@@ -62,3 +75,6 @@ export class ApiDemoComponent implements OnInit {
   }
 
 }
+// Задачи
+// нужно убрать стрелочки если данные меньше 3, 
+// также filter кнопка чтобы лимит динамически изменилась
